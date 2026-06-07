@@ -8,21 +8,28 @@
       name: nmap
       state: latest
       update_cache: yes
+    tags:
+      - Install
 
-  - name: Start nmap
-    ansible.builtin.shell:
-      cmd: nmap 10.0.2.50
-    register: nmap_result
+  - name: Output target
+    loop: "{{ lookup('file', './target.txt').splitlines() }}"
+    ansible.builtin.debug:
+      msg: "{{ item }}"
+    tags:
+      - target
+
+  - name: Run nmap
+    loop: "{{ lookup('file', './target.txt').splitlines() }}"
+    ansible.builtin.command: "nmap {{ item }} -oG -"
+    register: nmap_results
+    tags:
+      - nmap
   
   - name: Nmap output
+    loop: "{{ nmap_results.results }}"
     ansible.builtin.debug:
-      msg: "{{ nmap_result.stdout_lines }}"
-
-
-#  - name: Copy index
-#    ansible.builtin.copy:
-#      src: ./index.html
-#      dest: /var/www/html/index.nginx-debian.html
-#      owner: root
-#      group: root
-#      mode: '0666'
+      msg: "{{ item.stdout_lines }}"
+    loop_control:
+      label: "{{ item.item }}"
+    tags:
+      - result
