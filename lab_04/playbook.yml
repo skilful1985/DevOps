@@ -2,17 +2,5 @@
 - name: Deploy nginx
   hosts: myhosts
 
-  tasks:
-  - name: Install nginx 
-    ansible.builtin.apt:
-      name: nginx
-      state: latest
-      update_cache: yes
-
-  - name: Copy index
-    ansible.builtin.copy:
-      src: ./index.html
-      dest: /var/www/html/index.nginx-debian.html
-      owner: root
-      group: root
-      mode: '0666'
+  roles:
+    - nginx
