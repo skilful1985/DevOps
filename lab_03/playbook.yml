@@ -9,10 +9,20 @@
       state: latest
       update_cache: yes
 
-  - name: Copy index
-    ansible.builtin.copy:
-      src: ./index.html
-      dest: /var/www/html/index.nginx-debian.html
-      owner: root
-      group: root
-      mode: '0666'
+  - name: Start nmap
+    ansible.builtin.shell:
+      cmd: nmap 10.0.2.50
+    register: nmap_result
+  
+  - name: Nmap output
+    ansible.builtin.debug:
+      msg: "{{ nmap_result.stdout_lines }}"
+
+
+#  - name: Copy index
+#    ansible.builtin.copy:
+#      src: ./index.html
+#      dest: /var/www/html/index.nginx-debian.html
+#      owner: root
+#      group: root
+#      mode: '0666'
