@@ -17,6 +17,15 @@
     mode: '0644'
   notify: restart nginx
 
+# Создаем симлинки (активируем сайты)
+- name: Enable site
+  loop: "{{ lookup('file', './target.txt').splitlines() }}"
+  ansible.builtin.file:
+    src: "/etc/nginx/sites-available/site-{{ item }}.conf"
+    dest: /etc/nginx/sites-enabled/site-{{ item }}.conf
+    state: link
+  notify: restart nginx
+
 # Создаем папки для хранения Index файлов сайтов
 - name: Create site directory
   loop: "{{ lookup('file', './target.txt').splitlines() }}"
