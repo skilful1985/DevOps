@@ -15,6 +15,7 @@ docker run -d \
   --name nginx-cont \
   -p 54321:80 \
   -p 4321:443 \
+  -v ./nginx/ssl:/etc/nginx/ssl:ro \
   --restart unless-stopped \
   devops/nginx-server
 
