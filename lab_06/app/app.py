@@ -31,3 +31,6 @@ def hello():
     incr_hit_count()
     count = get_hit_count()
     return 'Hello World! I have been seen {} times. My name is: {}\n'.format(count, socket.gethostname())
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
